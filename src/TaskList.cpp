@@ -2,14 +2,17 @@
 #include "TaskList.h"
 
 using namespace std;
+
 // estructura nodo
 struct Node {
     Task data;
     Node* next;
 };
+
 // constructor de la clae
 TaskList::TaskList() : head(nullptr) {
 }
+
 // destructor 
 TaskList::~TaskList() {
     Node* current = head;
@@ -21,7 +24,8 @@ TaskList::~TaskList() {
         temp = nullptr;
     }
 }
-// funcin para ver si un id ya existe 
+
+// funcion para ver si un id ya existe 
 bool TaskList::idExists(int id) const {
     Node* current = head;
 
@@ -34,13 +38,14 @@ bool TaskList::idExists(int id) const {
 
     return false;
 }
+
 // funcion para crear nueva tarea 
 void TaskList::createTask(const Task& task) {
     if (idExists(task.getId())) {
         cout << "ID already exists.\n";
         return;
     }
-// se crea u un nuevo nodo
+// se crea un nuevo nodo
     Node* newNode = new Node{task, nullptr};
 // lista vacia 
     if (head == nullptr) {
@@ -58,7 +63,8 @@ void TaskList::createTask(const Task& task) {
 
     cout << "Task created succesfully!\n";
 }
-// veamos todas las tareas registradas 
+
+// ver todas las tareas registradas 
 void TaskList::showTasks() const {
     cout << "--- SHOW ALL TASKS ---\n";
 
@@ -75,6 +81,7 @@ void TaskList::showTasks() const {
         current = current->next;
     }
 }
+
 // funcion para buscar tarea por el id 
 Task* TaskList::searchById(int id) {
     Node* current = head;
@@ -88,6 +95,7 @@ Task* TaskList::searchById(int id) {
 
     return nullptr;
 }
+
 // funcion para eliminar una tarea, true si si se elimino, false si no 
 bool TaskList::deleteTask(int id) {
     if (head == nullptr) {
