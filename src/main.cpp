@@ -4,10 +4,10 @@
 using namespace std;
 
 int main () {
-	TaskList taskList; //crea lista de las tareas
-	int option; // la variable de seleccionar el menu
+	TaskList taskList; // crea lista de las tareas
+	int option; // variable para seleccionar en el menu
 
-	do { // diseno encabezado prueba
+	do { // prueba de diseño encabezado 
 		cout << "****************************************************************************************************" << endl;
 		cout << "          ccc            TTTTTT          M M    M M                                                 " << endl;
 		cout << "         c                  T            M   MM   M                                                 " << endl;
