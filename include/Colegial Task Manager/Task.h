@@ -25,8 +25,19 @@ public:
     int getPriority() const;
     string getDueDate() const;
     string getStatus() const;
+    string getPriorityText() const;
+
+
+    void setTitle(string title);
+    void setDescription(string description);
+    void setCourse(string course);
+    void setPriority(int priority);
+    void setDueDate(string dueDate);
+    void setStatus(string status);
+
 
     void display() const;
+   
 };
 
 #endif
