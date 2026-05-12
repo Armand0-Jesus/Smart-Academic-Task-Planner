@@ -7,17 +7,7 @@ using namespace std;
 
 const int TABLE_SIZE = 101;
 
-struct HashNode {
-    int key;
-    Task* taskPtr;
-    HashNode* next;
-
-    HashNode(int key, Task* taskPtr) {
-        this->key = key;
-        this->taskPtr = taskPtr;
-        next = nullptr;
-    }
-};
+struct HashNode;
 
 class SearchTable {
 private:
