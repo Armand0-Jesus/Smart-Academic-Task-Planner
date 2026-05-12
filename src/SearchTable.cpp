@@ -1,5 +1,17 @@
 #include "SearchTable.h"
 
+struct HashNode {
+    int key;
+    Task* taskPtr;
+    HashNode* next;
+
+    HashNode(int key, Task* taskPtr) {
+        this->key = key;
+        this->taskPtr = taskPtr;
+        next = nullptr;
+    }
+};
+
 SearchTable::SearchTable() {
     for (int i = 0; i < TABLE_SIZE; i++) {
         table[i] = nullptr;
@@ -107,3 +119,4 @@ void SearchTable::displayTable() const {
         }
     }
 }
+
