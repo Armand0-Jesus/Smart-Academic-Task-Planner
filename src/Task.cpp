@@ -6,7 +6,7 @@ using namespace std;
 // contructor por defecto 
 // se inician valores basicos 
 
-Task::Task() : id(0), priority(3), status("Pending") {
+Task::Task() : id(0), priority(3), status("Pendiente") {
 }
 
 // constructor con parametros 
@@ -93,10 +93,11 @@ void Task::setStatus(string status) {
 // muestra en pantalla toda la info de la tarea 
 void Task::display() const {
     cout << "[" << id << "] " << title << "\n";
-    cout << "Course: " << course << "\n";
-    cout << "Description: " << description << "\n";
-    cout << "Priority: " << getPriorityText() << "\n";
-    cout << "Due Date: " << dueDate << "\n";
-    cout << "Status: " << status << "\n";
+    cout << "Curso: " << course << "\n";
+    cout << "Descripcion: " << description << "\n";
+    cout << "Prioridad: " << getPriorityText() << "\n";
+    cout << "Fecha de entrega: " << dueDate << "\n";
+    cout << "Estatus: " << status << "\n";
 }
+
 
