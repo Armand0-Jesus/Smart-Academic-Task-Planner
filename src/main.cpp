@@ -33,10 +33,10 @@ int main() {
 		cout << "3. Buscar tareas por ID\n";
 		cout << "4. Eliminatr Tareas\n";
 		cout << "5. Marcar tarea como completada\n";
-		cout << "6. Muestra el historial\n";
+		cout << "6. Mostrar el historial\n";
 		cout << "7. Cola de Tareas pendientes\n";
 		cout << "8. Procesar siguiente tarea pendiente\n";
-		cout << "9. Muestra la tabla de busqueda\n";
+		cout << "9. Mostrar la tabla de busqueda\n";
 		//cout << "10. Editar tarea\n"; // opciones futuras
 		//cout << "11. Guardar tarea en archivo\n";
 		//cout << "12. Cargar tarea existente del archivo\n";
