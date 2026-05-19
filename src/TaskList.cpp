@@ -3,7 +3,6 @@
 
 using namespace std;
 
-
 struct Node {
     Task data;
     Node* next;
@@ -14,10 +13,8 @@ struct Node {
     }
 };
 
-
 TaskList::TaskList() : head(nullptr) {
 }
-
 
 TaskList::~TaskList() {
     Node* current = head;
@@ -32,7 +29,6 @@ TaskList::~TaskList() {
     head = nullptr;
 }
 
-
 bool TaskList::idExists(int id) const {
     Node* current = head;
 
@@ -46,7 +42,6 @@ bool TaskList::idExists(int id) const {
 
     return false;
 }
-
 
 void TaskList::createTask(const Task& task) {
     if (idExists(task.getId())) {
@@ -74,11 +69,9 @@ void TaskList::createTask(const Task& task) {
     cout << "La tarea se creo con exito!\n";
 }
 
-
 void TaskList::addTask(const Task& task) {
     createTask(task);
 }
-
 
 void TaskList::showTasks() const {
     cout << "--- Mostrar Todas las Tareas ---\n";
@@ -97,11 +90,9 @@ void TaskList::showTasks() const {
     }
 }
 
-
 void TaskList::displayAll() const {
     showTasks();
 }
-
 
 Task* TaskList::searchById(int id) {
     Node* current = head;
@@ -116,7 +107,6 @@ Task* TaskList::searchById(int id) {
 
     return nullptr;
 }
-
 
 bool TaskList::deleteTask(int id) {
     if (head == nullptr) {
@@ -148,7 +138,6 @@ bool TaskList::deleteTask(int id) {
     return true;
 }
 
-
 bool TaskList::markCompleted(int id) {
     Task* task = searchById(id);
 
@@ -159,7 +148,6 @@ bool TaskList::markCompleted(int id) {
     task->setStatus("Completada");
     return true;
 }
-
 
 bool TaskList::Empty() const {
     return head == nullptr;
