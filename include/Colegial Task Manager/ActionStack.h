@@ -36,7 +36,7 @@ public:
 
      /**
      * @brief Agrega la nueva accion al tope de la pila.
-     * @param action Descripcion de la accion realizada
+     * @param action Descripcion de la accion realizada.
      */
     void push(string action);
 
