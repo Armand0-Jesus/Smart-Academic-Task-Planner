@@ -1,6 +1,6 @@
 /**
  * @file Task.h
- * @brief Define la clase Task usada para representar una tarea academica
+ * @brief Define la clase Task usada para representar una tarea academica.
  */
 
 #ifndef TASK_H
