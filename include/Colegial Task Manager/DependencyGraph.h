@@ -25,7 +25,7 @@ private:
     /**
      * @brief Matriz de adyacencia que almacena las dependencias entre las tareas.
      *
-     * Puede significar que la tarea en la posicion j (segunda posicion) dependera 
+     * Puede significar que la tarea en la posicion j (segunda posicion) 
      * depndera de la tarea i (tarea en primera posicion).
      */
     int dependencies[MAX_TASKS][MAX_TASKS];
