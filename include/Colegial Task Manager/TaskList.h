@@ -1,6 +1,6 @@
 /**
  * @file TaskList.h
- * @brief Defines la clase TaskList utilizando listas enlazadas.
+ * @brief Define la clase TaskList utilizando listas enlazadas.
  */
 
 #ifndef TASKLIST_H
@@ -12,7 +12,7 @@ struct Node;
 
 /**
  * @class TaskList
- * @brief Manages la conexion principal de tares utilizando listas enlazadas.
+ * @brief Manega la conexion principal de tares utilizando listas enlazadas.
  */
 class TaskList {
 private:
@@ -20,7 +20,7 @@ private:
     
 public:
     /**
-     * @brief Creates una lista vacia para Task.
+     * @brief Crea una lista vacia para Task.
      */
     TaskList();
 
@@ -80,7 +80,7 @@ public:
     bool markCompleted(int id); // anadida
 
     /**
-     * @brief Revisa si la lista de tareas está vacía.
+     * @brief Revisa si la lista de tareas esta vacía.
      * @return true si la lista no tiene tareas, false sino.
      */
     bool Empty() const; // anadida
