@@ -190,7 +190,7 @@ int main() {
 
 			if (found != nullptr) {
 				if (dependencyGraph.canCompleteTask(id, taskList)) {
-					found->setStatus("Completeda");
+					found->setStatus("Completada");
 					cout << "La tarea fue marcada como completada.\n";
 					history.push("Tarea Marcada " + to_string(id) + " como completada");
 				}
