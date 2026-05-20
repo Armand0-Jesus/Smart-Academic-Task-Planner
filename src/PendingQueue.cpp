@@ -1,5 +1,15 @@
 #include "PendingQueue.h"
 
+struct QueueNode {
+    Task data;
+    QueueNode* next;
+
+    QueueNode(Task task) {
+        data = task;
+        next = nullptr;
+    }
+};
+
 PendingQueue::PendingQueue() {
     front = nullptr;
     rear = nullptr;
