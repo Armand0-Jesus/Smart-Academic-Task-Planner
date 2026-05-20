@@ -36,7 +36,7 @@ public:
     /**
      * @brief Constructor parametrizado.
      *
-     * Crea un objeto con toda la información requerida para la tarea.
+     * Crea un objeto con toda la informacion requerida para la tarea.
      *
      * @param id Identifiacdor unico para la tarea.
      * @param title Titulo de la tarea.
@@ -81,7 +81,7 @@ public:
     /** @}  */
 
     /**
-     * @brief Muestra en pantalla la información de la tarea.
+     * @brief Muestra en pantalla la informacion de la tarea.
      */
     void display() const;
    
