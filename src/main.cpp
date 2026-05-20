@@ -90,7 +90,7 @@ int main() {
 			cout << "Inserte fecha de entrega (dd/mm/yyyy): ";
 			getline(cin, dueDate);
 
-			cout << "Inserte estatus: ";
+			cout << "Inserte estatus (Pendiente, En Progreso, Completada): ";
 			getline(cin, status);
 
 			Task newTask(id, title, description, course, priority, dueDate, status);
