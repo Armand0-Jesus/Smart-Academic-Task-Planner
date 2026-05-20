@@ -3,6 +3,7 @@
 #include "PendingQueue.h"
 #include "ActionStack.h"
 #include "SearchTable.h"
+#include "DependencyGraph.h"
 
 using namespace std;
 
@@ -11,8 +12,11 @@ int main() {
 	ActionStack history;
 	PendingQueue pendingQueue;
 	SearchTable searchTable;
+	DependencyGraph dependencyGraph;
 
 	int option;
+
+	// menu principal
 
 	do {
 		cout << "**************************************************************************************************" << endl;
@@ -23,26 +27,27 @@ int main() {
 		cout << "            c                  T            M        M                                            " << endl;
 		cout << "             ccccc             T            M        M                                            " << endl;
 		cout << "                                                                                                  " << endl;
-		cout << "**************************************************************************************************" << endl;
-
-		// menu principal del programa
-
-		cout << "\n*******Colegial Task Manager*******\n";
+		cout << "               \n*******Colegial Task Manager*******\n";
 		cout << "1. Crear Tarea\n";
 		cout << "2. Ensenar todas las tareas\n";
 		cout << "3. Buscar tareas por ID\n";
-		cout << "4. Eliminatr Tareas\n";
+		cout << "4. Eliminar Tarea\n";
 		cout << "5. Marcar tarea como completada\n";
-		cout << "6. Mostrar el historial\n";
+		cout << "6. Mostrar historial\n";
 		cout << "7. Cola de Tareas pendientes\n";
 		cout << "8. Procesar siguiente tarea pendiente\n";
-		cout << "9. Mostrar la tabla de busqueda\n";
-		//cout << "10. Editar tarea\n"; // opciones futuras
-		//cout << "11. Guardar tarea en archivo\n";
-		//cout << "12. Cargar tarea existente del archivo\n";
+		cout << "9. Mostrar tabla de busqueda\n";
+		cout << "10. Añadir tarea dependiente\n";
+		cout << "11. Verificar si una tarea puede ser completada\n";
+		cout << "12. Mostrar dependencias\n";
+		//cout << "13. Editar tarea\n"; // opciones futuras
+		//cout << "14. Guardar tarea en archivo\n";
+		//cout << "15. Cargar tarea existente del archivo\n";
 		cout << "0. Exit\n";
 
-		cout << "Escoge una opcion: ";
+		cout << "**************************************************************************************************" << endl;
+
+		cout << "Seleccione una opcion: ";
 		cin >> option;
 
 		switch (option) {
@@ -82,7 +87,7 @@ int main() {
 
 			cin.ignore();
 
-			cout << "Inserte fecha de entrega: ";
+			cout << "Inserte fecha de entrega (dd/mm/yyyy): ";
 			getline(cin, dueDate);
 
 			cout << "Inserte estatus: ";
@@ -155,26 +160,53 @@ int main() {
 			break;
 		}
 
+		/*	case 5: { // marcar tarea como completada ; case 5 antiguo antes de anadir las validaciones
+				int id;
+				cout << "Inserte el ID de la tarea para marcar como completada: ";
+				cin >> id;
+
+				Task* found = searchTable.search(id);
+
+				if (found != nullptr) {
+					found->setStatus("Completada");
+					cout << "La Tarea fue marcada como completada." << endl;
+					history.push("La Tarea fue marcada " + to_string(id) + " como completada ");
+				}
+				else {
+					cout << "La Tarea no fue encontrada." << endl;
+					history.push("Se intento marcar una tarea " + to_string(id) + " como completada ");
+				}
+
+				break;
+			} */
+
 		case 5: { // marcar tarea como completada
 			int id;
+
 			cout << "Inserte el ID de la tarea para marcar como completada: ";
 			cin >> id;
 
 			Task* found = searchTable.search(id);
 
 			if (found != nullptr) {
-				found->setStatus("Completada");
-				cout << "La Tarea fue marcada como completada." << endl;
-				history.push("La Tarea fue marcada " + to_string(id) + " como completada ");
+				if (dependencyGraph.canCompleteTask(id, taskList)) {
+					found->setStatus("Completeda");
+					cout << "La tarea fue marcada como completada.\n";
+					history.push("Tarea Marcada " + to_string(id) + " como completada");
+				}
+				else {
+					cout << "La tarea aun no puede ser completada.\n";
+					dependencyGraph.showMissingPrerequisites(id, taskList);
+					history.push("Se intento completar una tarea " + to_string(id) + " sin pre-requisitos");
+				}
 			}
 			else {
-				cout << "La Tarea no fue encontrada." << endl;
-				history.push("Se intento marcar una tarea " + to_string(id) + " como completada ");
+				cout << "La tarea no fue encontrada.\n";
+				history.push("Se intento marcar tarea " + to_string(id) + " como completada");
 			}
 
 			break;
 		}
-
 		case 6: // ver historial
 			history.display();
 			break;
@@ -200,6 +232,56 @@ int main() {
 			searchTable.displayTable();
 			history.push("Se visualizo la Tabla de busqueda");
 			break;
+
+		case 10: { // registrar dependencia
+			int prerequisiteId, dependentId;
+
+			cout << "Inserte el ID de la tarea de pre-requisito: ";
+			cin >> prerequisiteId;
+
+			cout << "Inserte el ID de la tarea dependiente: ";
+			cin >> dependentId;
+
+			if (dependencyGraph.addDependency(prerequisiteId, dependentId, taskList)) {
+				history.push("Se anadio depedencia: La tarea " + to_string(dependentId) + " depende de la Tarea " + to_string(prerequisiteId));
+			}
+			else {
+				history.push(" El Intento para anadir una dependencia fue invalido");
+			}
+
+			break;
+		}
+
+		case 11: { // verificar si una tarea se puede completar
+			int id;
+
+			cout << "Inserte el ID de la tarea para verificar si puede ser completada: ";
+			cin >> id;
+
+			if (!taskList.idExists(id)) {
+				cout << "La tarea no fue encontrada.\n";
+				break;
+			}
+
+			if (dependencyGraph.canCompleteTask(id, taskList)) {
+				cout << "La tarea " << id << " puede ser completada.\n";
+				cout << "Todos los pre-requisitos fueron completados.\n";
+			}
+			else {
+				cout << "La tarea " << id << " no puede ser completada todavia.\n";
+				dependencyGraph.showMissingPrerequisites(id, taskList);
+			}
+
+			history.push("Los pre-requisitos para una tarea fueron verificados " + to_string(id));
+
+			break;
+		}
+
+		case 12: {
+			dependencyGraph.displayDependencies();
+			history.push("Visualizacion de dependencias entre tareas");
+			break;
+		}
 
 		case 0: // cerrar el programa
 			cout << "Saliendo del programa..." << endl;
