@@ -25,7 +25,7 @@ private:
     HashNode* table[TABLE_SIZE];
 
     /**
-     * @brief Calculates el indice hash para la tarea
+     * @brief Calcula el indice hash para la tarea
      * @param id Task ID to hash.
      * @return Indice en la tabla hash.
      *
