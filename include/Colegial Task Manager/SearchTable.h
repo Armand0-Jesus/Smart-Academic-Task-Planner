@@ -5,9 +5,7 @@
 #ifndef SEARCHTABLE_H
 #define SEARCHTABLE_H
 
-#include <iostream>
 #include "Task.h"
-using namespace std;
 
 const int TABLE_SIZE = 101;
 

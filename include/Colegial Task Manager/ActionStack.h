@@ -5,10 +5,7 @@
 #ifndef ACTIONSTACK_H
 #define ACTIONSTACK_H
 
-#include <iostream>
 #include <string>
-
-using namespace std;
 
 struct ActionNode;
 
@@ -38,7 +35,7 @@ public:
      * @brief Agrega la nueva accion al tope de la pila.
      * @param action Descripcion de la accion realizada.
      */
-    void push(string action);
+    void push(std::string action);
 
      /**
      * @brief Remueve la accion mas reciente de la pila.

@@ -5,9 +5,7 @@
 #ifndef PENDINGQUEUE_H
 #define PENDINGQUEUE_H
 
-#include <iostream>
 #include "Task.h"
-using namespace std;
 
 struct QueueNode;
 

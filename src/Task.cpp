@@ -1,11 +1,12 @@
-#include<iostream>
 #include "Task.h"
+
+#include <iostream>
+#include <string>
 
 using namespace std;
 
 // contructor por defecto 
 // se inician valores basicos 
-
 Task::Task() : id(0), priority(3), status("Pendiente") {
 }
 

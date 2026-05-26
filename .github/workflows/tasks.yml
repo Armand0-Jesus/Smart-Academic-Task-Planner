@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Revisions de Repositorio
+      - name: Revision de Repositorio
         uses: actions/checkout@v4
 
       - name: Compilar Aplicacion

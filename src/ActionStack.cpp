@@ -1,5 +1,9 @@
 #include "ActionStack.h"
 
+#include <iostream>
+#include <string>
+
+using namespace std;
 struct ActionNode {
     string action;
     ActionNode* next;

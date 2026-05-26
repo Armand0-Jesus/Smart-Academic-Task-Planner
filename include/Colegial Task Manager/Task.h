@@ -2,12 +2,10 @@
  * @file Task.h
  * @brief Define la clase Task usada para representar una tarea academica.
  */
-
 #ifndef TASK_H
 #define TASK_H
 
 #include <string>
-using namespace std;
 
 /**
  * @class Task
@@ -20,12 +18,12 @@ using namespace std;
 class Task {
 private:
     int id;
-    string title;
-    string description;
-    string course;
+    std::string title;
+    std::string description;
+    std::string course;
     int priority;
-    string dueDate;
-    string status;
+    std::string dueDate;
+    std::string status;
 
 public:
     /**
@@ -46,7 +44,7 @@ public:
      * @param dueDate Fecha de vencimiento de la tarea.
      * @param status Estado actual de la tarea.
      */
-    Task(int id, string title, string description, string course, int priority, string dueDate, string status);
+    Task(int id, std::string title, std::string description, std::string course, int priority, std::string dueDate, std::string status);
 
     /** 
      * @name Getters
@@ -55,13 +53,13 @@ public:
      */
 
     int getId() const;
-    string getTitle() const;
-    string getDescription() const;
-    string getCourse() const;
+    std::string getTitle() const;
+    std::string getDescription() const;
+    std::string getCourse() const;
     int getPriority() const;
-    string getDueDate() const;
-    string getStatus() const;
-    string getPriorityText() const;
+    std::string getDueDate() const;
+    std::string getStatus() const;
+    std::string getPriorityText() const;
 
     /** @}  */
 
@@ -71,12 +69,12 @@ public:
      * @{
      */
 
-    void setTitle(string title);
-    void setDescription(string description);
-    void setCourse(string course);
+    void setTitle(std::string title);
+    void setDescription(std::string description);
+    void setCourse(std::string course);
     void setPriority(int priority);
-    void setDueDate(string dueDate);
-    void setStatus(string status);
+    void setDueDate(std::string dueDate);
+    void setStatus(std::string status);
 
     /** @}  */
 

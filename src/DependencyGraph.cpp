@@ -1,5 +1,9 @@
 #include "DependencyGraph.h"
 
+#include <iostream>
+
+using namespace std;
+
 DependencyGraph::DependencyGraph() {
 	taskCount = 0;
 

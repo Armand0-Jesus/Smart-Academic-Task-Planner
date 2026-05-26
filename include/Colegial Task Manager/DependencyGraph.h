@@ -5,7 +5,6 @@
 #ifndef DEPENDENCYGRAPH_H
 #define DEPENDENCYGRAPH_H
 
-#include <iostream>
 #include "TaskList.h"
 
 /**

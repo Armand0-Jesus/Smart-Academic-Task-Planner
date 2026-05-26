@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <iostream>
+
 using namespace std;
 
 void testTaskCreation() {
@@ -42,7 +43,7 @@ void testTaskListOperations() {
 }
 
 void testSearchTable() {
-    Task task(201, "Ensayo", "Escribir borrador", "INGL", 2, "2026-05-27", "Pendiente");
+    Task task(201, "Ensayo", "Escribir borrador", "INGL1111", 2, "2026-05-27", "Pendiente");
 
     SearchTable table;
     table.insert(task.getId(), &task);

@@ -1,8 +1,8 @@
-#include <iostream>
 #include "TaskList.h"
 
-using namespace std;
+#include <iostream>
 
+using namespace std;
 struct Node {
     Task data;
     Node* next;

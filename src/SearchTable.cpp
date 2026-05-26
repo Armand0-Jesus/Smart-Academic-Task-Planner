@@ -1,5 +1,9 @@
 #include "SearchTable.h"
 
+#include <iostream>
+
+using namespace std;
+
 struct HashNode {
     int key;
     Task* taskPtr;
