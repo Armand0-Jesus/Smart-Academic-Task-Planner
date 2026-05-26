@@ -1,0 +1,36 @@
+name: CI para tareas
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Revisions de Repositorio
+        uses: actions/checkout@v4
+
+      - name: Compilar Aplicacion
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic \
+            -I"include/Colegial Task Manager" \
+            src/*.cpp \
+            -o colegial_task_manager
+
+      - name: Compilar Pruebas Unitarias
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic \
+            -I"include/Colegial Task Manager" \
+            tests/test.cpp \
+            src/Task.cpp \
+            src/TaskList.cpp \
+            src/ActionStack.cpp \
+            src/PendingQueue.cpp \
+            src/SearchTable.cpp \
+            src/DependencyGraph.cpp \
+            -o tests_runner
+
+      - name: Correr Pruebas Unitarias
+        run: ./tests_runner
