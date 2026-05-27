@@ -19,6 +19,10 @@ PendingQueue::PendingQueue() {
 }
 
 PendingQueue::~PendingQueue() {
+    clear();
+}
+
+void PendingQueue::clear() {
     while (front != nullptr) {
         QueueNode* temp = front;
         front = front->next;
