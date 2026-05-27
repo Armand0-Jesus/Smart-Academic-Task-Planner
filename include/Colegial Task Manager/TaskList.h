@@ -6,6 +6,7 @@
 #define TASKLIST_H
 
 #include "Task.h"
+#include <string>
 
 struct Node;
 
@@ -83,6 +84,9 @@ public:
      * @return true si la lista no tiene tareas, false sino.
      */
     bool Empty() const; // anadida
+
+    void saveToFile(const string& filename) const;
+    void loadFromFile(const string& filename);
 };
 
 #endif
