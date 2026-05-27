@@ -273,5 +273,5 @@ void TaskList::loadFromFile(const string& filename) {
 }
 
     
-}
+
 
