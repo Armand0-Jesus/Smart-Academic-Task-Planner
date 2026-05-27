@@ -40,6 +40,8 @@ public:
      */
     ~SearchTable();
 
+    void clear();
+
     /**
      * @brief Inserta una tarea a la tabla hash.
      * @param id ID de tarea usafa como llave
