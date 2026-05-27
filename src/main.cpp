@@ -15,6 +15,9 @@ int main() {
 	DependencyGraph dependencyGraph;
 
 	taskList.loadFromFile("tasks.txt");
+	taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
+	history.loadFromFile("history.txt");
+	dependencyGraph.loadFromFile("dependencies.txt", taskList);
 
 	int option;
 
@@ -389,28 +392,36 @@ int main() {
 			break;
 		}
 
-		case 12: {
+		case 12: 
 			dependencyGraph.displayDependencies();
 			history.push("Visualizacion de dependencias entre tareas");
 			break;
-		}
 
-		case 13:
-			taskList.saveToFile("tasks.txt");
-			history.push("Se guardaron las tareas en el archivo de texto");
-			break;
-
-		case 14:
-			taskList.loadFromFile("tasks.txt");
-			history.push("Se cargaron las tareas desde el archivo de texto");
-			break;
+		case 13: 
+   			cout << "\n--- GUARDAR DATOS ---\n";
+    		history.push("Se guardaron las tareas en el archivo de texto.");
+    		taskList.saveToFile("tasks.txt");
+   			history.saveToFile("history.txt");
+    		dependencyGraph.saveToFile("dependencies.txt");
+    		break;
+			
+		case 14: 
+    		cout << "\n--- CARGAR DATOS ---\n";
+    		taskList.loadFromFile("tasks.txt");
+    		taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
+    		history.loadFromFile("history.txt");
+    		dependencyGraph.loadFromFile("dependencies.txt", taskList);
+    		history.push("Se cargaron las tareas desde el archivo de texto.");
+    		break;
 
 		case 0: // cerrar el programa
 			taskList.saveToFile("tasks.txt");
-			cout << "Se guardaron los datos correctamente." << endl;
-			cout << "Saliendo del programa..." << endl;
-			break;
-
+    		history.saveToFile("history.txt");
+    		dependencyGraph.saveToFile("dependencies.txt");
+    		cout << "Se guardaron los datos correctamente." << endl;
+    		cout << "Saliendo del programa..." << endl;
+    		break;
+			
 		default:
 			cout << "Opcion invalida." << endl;
 		}
