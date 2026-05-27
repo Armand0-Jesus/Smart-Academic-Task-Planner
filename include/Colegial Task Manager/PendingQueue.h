@@ -33,6 +33,8 @@ public:
      */
     ~PendingQueue();
 
+    void clear();
+
     /**
      * @brief Agrega una tarea pendiente a la parte trasera de la cola.
      * @param task Task objecto para agregar a la cola.
