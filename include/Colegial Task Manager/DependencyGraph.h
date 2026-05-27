@@ -87,8 +87,8 @@ public:
     DependencyGraph();
 
     void clear();
-    void saveToFile(const string& filename) const;
-    void loadFromFile(const string& filename, TaskList& taskList);
+    void saveToFile(const std::string& filename) const;
+    void loadFromFile(const std::string& filename, TaskList& taskList);
 
     /**
      * @brief Agrega la dependencia entre las dos tareas.

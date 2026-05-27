@@ -92,12 +92,11 @@ public:
      */
     bool Empty() const; // anadida
 
-    void saveToFile(const string& filename) const;
-    void loadFromFile(const string& filename);
+    void saveToFile(const std::string& filename) const;
+    void loadFromFile(const std::string& filename);
 };
 
 #endif
-
 
 
 

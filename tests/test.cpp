@@ -7,6 +7,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 
@@ -56,10 +57,40 @@ void testSearchTable() {
     assert(table.search(201) == nullptr);
 }
 
+void testFilePersistence() {
+    TaskList list;
+
+    Task task1(301, "Estudiar", "Repasar grafos", "COMP2501", 1, "2026-05-20", "Pendiente");
+    Task task2(302, "Proyecto", "Terminar Hito 5", "COMP3075", 2, "2026-06-01", "Completada");
+
+    list.createTask(task1);
+    list.createTask(task2);
+
+    list.saveToFile("test_tasks.txt");
+
+    TaskList loadedList;
+    loadedList.loadFromFile("test_tasks.txt");
+
+    Task* found1 = loadedList.searchById(301);
+    Task* found2 = loadedList.searchById(302);
+
+    assert(found1 != nullptr);
+    assert(found1->getTitle() == "Estudiar");
+    assert(found1->getCourse() == "COMP2501");
+    assert(found1->getStatus() == "Pendiente");
+
+    assert(found2 != nullptr);
+    assert(found2->getTitle() == "Proyecto");
+    assert(found2->getStatus() == "Completada");
+
+    remove("test_tasks.txt");
+}
+
 int main() {
     testTaskCreation();
     testTaskListOperations();
     testSearchTable();
+    testFilePersistence();
 
     cout << "Todas las pruebas fueron completadas exitosamente!\n";
     return 0;
