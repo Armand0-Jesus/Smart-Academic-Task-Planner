@@ -14,6 +14,8 @@ int main() {
 	SearchTable searchTable;
 	DependencyGraph dependencyGraph;
 
+	taskList.loadFromFile("tasks.txt");
+
 	int option;
 
 	// menu principal
@@ -41,8 +43,8 @@ int main() {
 		cout << "11. Verificar si una tarea puede ser completada\n";
 		cout << "12. Mostrar dependencias\n";
 		//cout << "13. Editar tarea\n"; // opciones futuras
-		//cout << "14. Guardar tarea en archivo\n";
-		//cout << "15. Cargar tarea existente del archivo\n";
+		cout << "14. Guardar tarea en archivo\n";
+		cout << "15. Cargar tarea existente del archivo\n";
 		cout << "0. Exit\n";
 
 		cout << "**************************************************************************************************" << endl;
@@ -109,6 +111,11 @@ int main() {
 				}
 			}
 
+			if (title.empty() || description.empty() || course.empty() || dueDate.empty() || status.empty()) {
+    			cout << "ERROR: ningun campo puede estar vacio.\n";
+    			history.push("Se intento crear una tarea con informacion vacia.");
+
+
 			break;
 		}
 
@@ -131,7 +138,7 @@ int main() {
 				history.push("Tarea buscada con el ID " + to_string(id));
 			}
 			else {
-				cout << "La tarea no fue encontrada." << endl;
+				cout << "ERROR: La tarea no fue encontrada." << endl;
 				history.push("Se intento buscar la tarea con el ID " + to_string(id));
 			}
 
@@ -153,7 +160,7 @@ int main() {
 				history.push("Se elimino la tarea con ID " + to_string(id));
 			}
 			else {
-				cout << "La tarea no fue encontrada." << endl;
+				cout << "ERROR: La tarea no fue encontrada." << endl;
 				history.push("Se intento eliminar una tarea con ID " + to_string(id));
 			}
 
@@ -195,13 +202,13 @@ int main() {
 					history.push("Tarea Marcada " + to_string(id) + " como completada");
 				}
 				else {
-					cout << "La tarea aun no puede ser completada.\n";
+					cout << "ERROR: La tarea aun no puede ser completada.\n";
 					dependencyGraph.showMissingPrerequisites(id, taskList);
 					history.push("Se intento completar una tarea " + to_string(id) + " sin pre-requisitos");
 				}
 			}
 			else {
-				cout << "La tarea no fue encontrada.\n";
+				cout << "AVISO: La tarea no fue encontrada.\n";
 				history.push("Se intento marcar tarea " + to_string(id) + " como completada");
 			}
 
@@ -259,7 +266,7 @@ int main() {
 			cin >> id;
 
 			if (!taskList.idExists(id)) {
-				cout << "La tarea no fue encontrada.\n";
+				cout << "AVISO: La tarea no fue encontrada.\n";
 				break;
 			}
 
@@ -283,7 +290,19 @@ int main() {
 			break;
 		}
 
+		case 13:
+    		taskList.saveToFile("tasks.txt");
+    		history.push("Se guardaron las tareas en el archivo de texto");
+    		break;
+
+		case 14:
+   			taskList.loadFromFile("tasks.txt");
+    		history.push("Se cargaron las tareas desde el archivo de texto");
+    		break;
+
 		case 0: // cerrar el programa
+			taskList.saveToFile("tasks.txt");
+			cout << "Se guardaron los datos correctamente." << endl;
 			cout << "Saliendo del programa..." << endl;
 			break;
 
