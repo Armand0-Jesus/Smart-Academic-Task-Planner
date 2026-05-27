@@ -110,17 +110,17 @@ int main() {
 				}
 
 				if (priority < 1 || priority > 3) {
-					cout << "Numero de prioridad de ser 1, 2, or 3.\n";
+					cout << "EL numero de prioridad debe ser 1, 2, or 3.\n";
 				}
 
 			} while (priority < 1 || priority > 3);
 
 			cin.ignore();
 
-			cout << "Inserte fecha de entrega (dd/mm/yyyy): ";
+			cout << "Fecha de entrega (dd/mm/yyyy): ";
 			getline(cin, dueDate);
 
-			cout << "Inserte estatus (Pendiente, En Progreso, Completada): ";
+			cout << "Inserte estatus de la Tarea (Pendiente, En Progreso, Completada): ";
 			getline(cin, status);
 
 			if (title.empty() || description.empty() || course.empty() || dueDate.empty() || status.empty()) {
@@ -162,7 +162,7 @@ int main() {
 
 		case 2: // mostrar todas las tareas
 			taskList.showTasks();
-			history.push("Se mostro todas las tareas");
+			history.push("Se mostraron todas las tareas");
 			break;
 
 		case 3: { // buscar tarea por el id
