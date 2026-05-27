@@ -150,8 +150,9 @@ bool TaskList::markCompleted(int id) {
     return true;
 }
 
-bool TaskList::Empty() const {
+    bool TaskList::Empty() const {
     return head == nullptr;
+}
 
 void TaskList::saveToFile(const string& filename) const {
     ofstream file(filename);
