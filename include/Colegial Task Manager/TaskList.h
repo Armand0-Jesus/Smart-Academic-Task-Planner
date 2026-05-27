@@ -10,6 +10,9 @@
 
 struct Node;
 
+class SearchTable;
+class PendingQueue;
+
 /**
  * @class TaskList
  * @brief Manega la conexion principal de tares utilizando listas enlazadas.
@@ -28,6 +31,9 @@ public:
      * @brief Destructor para liberar memoria allocada.
      */
     ~TaskList();
+
+    void clear();
+    void rebuildSearchAndQueue(SearchTable& searchTable, PendingQueue& pendingQueue);
 
     /**
      * @brief Revisa si una tarea ya existe.
