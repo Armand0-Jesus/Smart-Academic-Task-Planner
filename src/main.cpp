@@ -42,15 +42,22 @@ int main() {
 		cout << "10. Añadir tarea dependiente\n";
 		cout << "11. Verificar si una tarea puede ser completada\n";
 		cout << "12. Mostrar dependencias\n";
-		//cout << "13. Editar tarea\n"; // opciones futuras
-		cout << "14. Guardar tarea en archivo\n";
-		cout << "15. Cargar tarea existente del archivo\n";
+		cout << "13. Guardar tarea en archivo\n";
+		cout << "14. Cargar tarea existente del archivo\n";
+		//cout << "15. Editar tarea\n"; // opciones futuras
 		cout << "0. Exit\n";
 
 		cout << "**************************************************************************************************" << endl;
 
 		cout << "Seleccione una opcion: ";
 		cin >> option;
+
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(1000, '\n');
+			cout << "ERROR: debe entrar una opcion numerica.\n";
+			continue;
+		}
 
 		switch (option) {
 		case 1: { // crea tarea
@@ -59,6 +66,19 @@ int main() {
 
 			cout << "Inserta el ID de Tarea: ";
 			cin >> id;
+			
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: el ID debe ser un numero.\n";
+				break;
+			}
+
+			if (id <= 0) {
+				cout << "ERROR: el ID debe ser un numero mayor que 0.\n";
+				break;
+			}
+			
 			cin.ignore();
 
 			// verifica si el ID existe
@@ -80,6 +100,14 @@ int main() {
 			do { // validacion
 				cout << "Inserte la prioridad (1=Alta, 2=Media, 3=Baja): ";
 				cin >> priority;
+				
+				if (cin.fail()) {
+					cin.clear();
+					cin.ignore(1000, '\n');
+					cout << "ERROR: la prioridad debe ser un numero.\n";
+					priority = 0;
+					continue;
+				}
 
 				if (priority < 1 || priority > 3) {
 					cout << "Numero de prioridad de ser 1, 2, or 3.\n";
@@ -94,6 +122,24 @@ int main() {
 
 			cout << "Inserte estatus (Pendiente, En Progreso, Completada): ";
 			getline(cin, status);
+
+			if (title.empty() || description.empty() || course.empty() || dueDate.empty() || status.empty()) {
+				cout << "ERROR: ningun campo puede estar vacio.\n";
+				history.push("Se intento crear una tarea con informacion vacia.");
+				break;
+			}
+
+			if (dueDate.length() != 10 || dueDate[2] != '/' || dueDate[5] != '/') {
+				cout << "ERROR: la fecha debe tener formato dd/mm/yyyy.\n";
+				break;
+			}
+
+			if (status != "Pendiente" && status != "pendiente" && status != "PENDIENTE" &&
+				status != "En Progreso" && status != "en progreso" && status != "EN PROGRESO" &&
+				status != "Completada" && status != "completada" && status != "COMPLETADA") {
+				cout << "ERROR: el estatus debe ser Pendiente, En Progreso o Completada.\n";
+				break;
+			}
 
 			Task newTask(id, title, description, course, priority, dueDate, status);
 
@@ -111,11 +157,6 @@ int main() {
 				}
 			}
 
-			if (title.empty() || description.empty() || course.empty() || dueDate.empty() || status.empty()) {
-    			cout << "ERROR: ningun campo puede estar vacio.\n";
-    			history.push("Se intento crear una tarea con informacion vacia.");
-
-
 			break;
 		}
 
@@ -129,6 +170,17 @@ int main() {
 			cout << "Inserte el ID de la tarea para buscarla: ";
 			cin >> id;
 
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: el ID debe ser un numero.\n";
+				break;
+			}
+
+			if (id <= 0) {
+				cout << "ERROR: el ID debe ser mayor que 0.\n";
+				break;
+			}
 
 			Task* found = searchTable.search(id);
 
@@ -151,6 +203,18 @@ int main() {
 			cout << "\n--- Tarea Eliminada ---" << endl;
 			cout << "Inserta el ID de la tarea para ser eliminada: ";
 			cin >> id;
+
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: el ID debe ser un numero.\n";
+				break;
+			}
+
+			if (id <= 0) {
+				cout << "ERROR: el ID debe ser mayor que 0.\n";
+				break;
+			}
 
 			bool removedFromList = taskList.deleteTask(id);
 
@@ -192,6 +256,18 @@ int main() {
 
 			cout << "Inserte el ID de la tarea para marcar como completada: ";
 			cin >> id;
+
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: el ID debe ser un numero.\n";
+				break;
+			}
+
+			if (id <= 0) {
+				cout << "ERROR: el ID debe ser mayor que 0.\n";
+				break;
+			}
 
 			Task* found = searchTable.search(id);
 
@@ -249,6 +325,23 @@ int main() {
 			cout << "Inserte el ID de la tarea dependiente: ";
 			cin >> dependentId;
 
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: los IDs deben ser numeros.\n";
+				break;
+			}
+
+			if (prerequisiteId <= 0 || dependentId <= 0) {
+				cout << "ERROR: los IDs deben ser mayores que 0.\n";
+				break;
+			}
+
+			if (prerequisiteId == dependentId) {
+				cout << "ERROR: una tarea no puede depender de si misma.\n";
+				break;
+			}
+
 			if (dependencyGraph.addDependency(prerequisiteId, dependentId, taskList)) {
 				history.push("Se anadio depedencia: La tarea " + to_string(dependentId) + " depende de la Tarea " + to_string(prerequisiteId));
 			}
@@ -264,6 +357,18 @@ int main() {
 
 			cout << "Inserte el ID de la tarea para verificar si puede ser completada: ";
 			cin >> id;
+
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: el ID debe ser un numero.\n";
+				break;
+			}
+
+			if (id <= 0) {
+				cout << "ERROR: el ID debe ser mayor que 0.\n";
+				break;
+			}
 
 			if (!taskList.idExists(id)) {
 				cout << "AVISO: La tarea no fue encontrada.\n";
@@ -291,14 +396,14 @@ int main() {
 		}
 
 		case 13:
-    		taskList.saveToFile("tasks.txt");
-    		history.push("Se guardaron las tareas en el archivo de texto");
-    		break;
+			taskList.saveToFile("tasks.txt");
+			history.push("Se guardaron las tareas en el archivo de texto");
+			break;
 
 		case 14:
-   			taskList.loadFromFile("tasks.txt");
-    		history.push("Se cargaron las tareas desde el archivo de texto");
-    		break;
+			taskList.loadFromFile("tasks.txt");
+			history.push("Se cargaron las tareas desde el archivo de texto");
+			break;
 
 		case 0: // cerrar el programa
 			taskList.saveToFile("tasks.txt");
