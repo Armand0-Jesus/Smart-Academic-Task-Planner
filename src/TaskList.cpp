@@ -217,6 +217,8 @@ void TaskList::loadFromFile(const string& filename) {
         return;
     }
 
+    clear();
+
     string line;
 
     while (getline(file, line)) {
