@@ -24,7 +24,7 @@ ActionStack::~ActionStack() {
     clear();
 }
 
-void DependencyGraph::clear() {
+void ActionStack::clear() {
    while (top != nullptr) {
         ActionNode* temp = top;
         top = top->next;
