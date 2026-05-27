@@ -29,6 +29,7 @@ public:
      */
     ~ActionStack();
 
+    void clear();
     void saveToFile(const std::string& filename) const;
     void loadFromFile(const std::string& filename);
 
@@ -48,8 +49,6 @@ public:
      * @brief Muestra el historial de acciones en orden de nuevo a mas viejo.
      */
     void display() const;
-
-    void clear();
 
      /**
      * @brief Revisa si ActionStack esta vacio.
