@@ -6,6 +6,7 @@
 #define TASKLIST_H
 
 #include "Task.h"
+
 #include <string>
 
 struct Node;
