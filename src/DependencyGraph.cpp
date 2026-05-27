@@ -1,19 +1,90 @@
 #include "DependencyGraph.h"
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
 DependencyGraph::DependencyGraph() {
-	taskCount = 0;
+    clear();
+}
 
-	for (int i = 0; i < MAX_TASKS; i++) {
-		taskIds[i] = -1;
+void DependencyGraph::clear() {
+    taskCount = 0;
 
-		for (int j = 0; j < MAX_TASKS; j++) {
-			dependencies[i][j] = 0;
-		}
-	}
+    for (int i = 0; i < MAX_TASKS; i++) {
+        taskIds[i] = -1;
+
+        for (int j = 0; j < MAX_TASKS; j++) {
+            dependencies[i][j] = 0;
+        }
+    }
+}
+
+void DependencyGraph::saveToFile(const string& filename) const {
+    ofstream file(filename);
+
+    if (!file) {
+        cout << "ERROR: No se pudo abrir el archivo de dependencias para guardar.\n";
+        return;
+    }
+
+    for (int prerequisiteIndex = 0; prerequisiteIndex < taskCount; prerequisiteIndex++) {
+        for (int dependentIndex = 0; dependentIndex < taskCount; dependentIndex++) {
+            if (dependencies[prerequisiteIndex][dependentIndex] == 1) {
+                file << taskIds[prerequisiteIndex] << "|"
+                     << taskIds[dependentIndex] << endl;
+            }
+        }
+    }
+
+    file.close();
+    cout << "Dependencias guardadas correctamente en '" << filename << "'.\n";
+}
+
+void DependencyGraph::loadFromFile(const string& filename, TaskList& taskList) {
+    ifstream file(filename);
+
+    if (!file) {
+        cout << "AVISO: No se encontro archivo previo de dependencias.\n";
+        return;
+    }
+
+    clear();
+
+    string line;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string prerequisiteStr;
+        string dependentStr;
+
+        getline(ss, prerequisiteStr, '|');
+        getline(ss, dependentStr, '|');
+
+        if (prerequisiteStr.empty() || dependentStr.empty()) {
+            cout << "AVISO: Dependencia incompleta ignorada.\n";
+            continue;
+        }
+
+        int prerequisiteId;
+        int dependentId;
+
+        try {
+            prerequisiteId = stoi(prerequisiteStr);
+            dependentId = stoi(dependentStr);
+        } catch (...) {
+            cout << "AVISO: Dependencia invalida ignorada.\n";
+            continue;
+        }
+
+        addDependency(prerequisiteId, dependentId, taskList);
+    }
+
+    file.close();
+    cout << "Dependencias cargadas correctamente desde '" << filename << "'.\n";
 }
 
 int DependencyGraph::findTaskIndex(int taskId) const {
@@ -135,7 +206,7 @@ bool DependencyGraph::canCompleteTask(int taskId, TaskList& taskList) const {
 				return false;
 			}
 
-			if (prerequisiteTask->getStatus() != "Completeda") {
+			if (prerequisiteTask->getStatus() != "Completada") {
 				return false;
 			}
 		}
