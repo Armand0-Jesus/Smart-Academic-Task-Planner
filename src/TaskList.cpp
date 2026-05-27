@@ -1,9 +1,13 @@
 #include "TaskList.h"
+#include "SearchTable.h"
+#include "PendingQueue.h"
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
 using namespace std;
+
 struct Node {
     Task data;
     Node* next;
@@ -18,6 +22,10 @@ TaskList::TaskList() : head(nullptr) {
 }
 
 TaskList::~TaskList() {
+    clear();
+}
+
+void TaskList::clear() {
     Node* current = head;
 
     while (current != nullptr) {
@@ -28,6 +36,27 @@ TaskList::~TaskList() {
     }
 
     head = nullptr;
+}
+
+void TaskList::rebuildSearchAndQueue(SearchTable& searchTable, PendingQueue& pendingQueue) {
+    searchTable.clear();
+    pendingQueue.clear();
+
+    Node* current = head;
+
+    while (current != nullptr) {
+        searchTable.insert(current->data.getId(), &(current->data));
+
+        string status = current->data.getStatus();
+
+        if (status == "Pendiente" || status == "pendiente" || status == "PENDIENTE") {
+            pendingQueue.enqueue(current->data);
+        }
+
+        current = current->next;
+    }
+
+    cout << "Tabla de busqueda y cola de pendientes reconstruidas correctamente.\n";
 }
 
 bool TaskList::idExists(int id) const {
