@@ -25,14 +25,11 @@ ActionStack::~ActionStack() {
 }
 
 void DependencyGraph::clear() {
-    taskCount = 0;
-
-    for (int i = 0; i < MAX_TASKS; i++) {
-        taskIds[i] = -1;
-
-        for (int j = 0; j < MAX_TASKS; j++) {
-            dependencies[i][j] = 0;
-        }
+   while (top != nullptr) {
+        ActionNode* temp = top;
+        top = top->next;
+        delete temp;
+        temp = nullptr;
     }
 }
 
