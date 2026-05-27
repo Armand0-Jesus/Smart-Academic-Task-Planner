@@ -23,6 +23,10 @@ SearchTable::SearchTable() {
 }
 
 SearchTable::~SearchTable() {
+    clear();
+}
+
+void SearchTable::clear() {
     for (int i = 0; i < TABLE_SIZE; i++) {
         HashNode* current = table[i];
 
@@ -30,8 +34,9 @@ SearchTable::~SearchTable() {
             HashNode* temp = current;
             current = current->next;
             delete temp;
-            temp = nullptr;
         }
+
+        table[i] = nullptr;
     }
 }
 
