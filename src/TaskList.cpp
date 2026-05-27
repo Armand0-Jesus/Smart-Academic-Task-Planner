@@ -176,7 +176,7 @@ void TaskList::saveToFile(const string& filename) const {
     }
 
     file.close();
-    cout << "Los datos fueron guardados correctamente en el archivo.txt\n";
+    cout << "Los datos fueron guardados correctamente en el archivo 'task.txt'\n";
 }
 
 void TaskList::loadFromFile(const string& filename) {
@@ -237,7 +237,7 @@ void TaskList::loadFromFile(const string& filename) {
     }
 
     file.close();
-    cout << "Los datos fueron cargados correctamente desde el archivo.txt\n";
+    cout << "Los datos fueron cargados correctamente desde el archivo 'task.txt'\n";
 }
 
     
