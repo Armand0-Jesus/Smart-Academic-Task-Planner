@@ -104,6 +104,8 @@ public:
      */
     bool addDependency(int prerequisiteId, int dependentId, TaskList& taskList);
 
+    void removeTaskDependencies(int taskId);
+
     /**
      * @brief Verifica si la tarea se puede completar.
      *
@@ -124,7 +126,7 @@ public:
     /**
      * @brief Muestra todas las dependencias que han sido registradas en el grafo.
      */
-    void displayDependencies() const;
+    void displayDependencies(TaskList& taskList) const;
 
 };
 

@@ -45,8 +45,7 @@ int main() {
 		cout << "10. Añadir tarea dependiente\n";
 		cout << "11. Verificar si una tarea puede ser completada\n";
 		cout << "12. Mostrar dependencias\n";
-		cout << "13. Guardar tarea en archivo\n";
-		cout << "14. Cargar tarea existente del archivo\n";
+		cout << "13. Administrar archivos\n";
 		//cout << "15. Editar tarea\n"; // opciones futuras
 		cout << "0. Exit\n";
 
@@ -223,6 +222,7 @@ int main() {
 
 			if (removedFromList) {
 				searchTable.remove(id);
+				dependencyGraph.removeTaskDependencies(id);
 				cout << "La tarea fue eliminada con exito." << endl;
 				history.push("Se elimino la tarea con ID " + to_string(id));
 			}
@@ -233,26 +233,6 @@ int main() {
 
 			break;
 		}
-
-		/*	case 5: { // marcar tarea como completada ; case 5 antiguo antes de anadir las validaciones
-				int id;
-				cout << "Inserte el ID de la tarea para marcar como completada: ";
-				cin >> id;
-
-				Task* found = searchTable.search(id);
-
-				if (found != nullptr) {
-					found->setStatus("Completada");
-					cout << "La Tarea fue marcada como completada." << endl;
-					history.push("La Tarea fue marcada " + to_string(id) + " como completada ");
-				}
-				else {
-					cout << "La Tarea no fue encontrada." << endl;
-					history.push("Se intento marcar una tarea " + to_string(id) + " como completada ");
-				}
-
-				break;
-			} */
 
 		case 5: { // marcar tarea como completada
 			int id;
@@ -277,6 +257,7 @@ int main() {
 			if (found != nullptr) {
 				if (dependencyGraph.canCompleteTask(id, taskList)) {
 					found->setStatus("Completada");
+					dependencyGraph.removeTaskDependencies(id);
 					cout << "La tarea fue marcada como completada.\n";
 					history.push("Tarea Marcada " + to_string(id) + " como completada");
 				}
@@ -305,7 +286,7 @@ int main() {
 		case 8: // procesar proxima tarea pendiente
 			if (pendingQueue.dequeue()) {
 				cout << "La tarea pendiente fue procesada." << endl;
-				history.push("Se porceso la siguiente tarea pendiente de la cola");
+				history.push("Se proceso la siguiente tarea pendiente de la cola");
 			}
 			else {
 				cout << "No hay tareas pendiente en la cola." << endl;
@@ -380,7 +361,7 @@ int main() {
 
 			if (dependencyGraph.canCompleteTask(id, taskList)) {
 				cout << "La tarea " << id << " puede ser completada.\n";
-				cout << "Todos los pre-requisitos fueron completados.\n";
+				cout << "No tiene pre-requisitos o ya todos fueron completados.\n";
 			}
 			else {
 				cout << "La tarea " << id << " no puede ser completada todavia.\n";
@@ -393,32 +374,68 @@ int main() {
 		}
 
 		case 12: 
-			dependencyGraph.displayDependencies();
+			dependencyGraph.displayDependencies(taskList);
 			history.push("Visualizacion de dependencias entre tareas");
 			break;
 
-		case 13: 
-   			cout << "\n--- GUARDAR DATOS ---\n";
-    		history.push("Se guardaron las tareas en el archivo de texto.");
-    		taskList.saveToFile("tasks.txt");
-   			history.saveToFile("history.txt");
-    		dependencyGraph.saveToFile("dependencies.txt");
-    		break;
-			
-		case 14: 
-    		cout << "\n--- CARGAR DATOS ---\n";
-    		taskList.loadFromFile("tasks.txt");
-    		taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
-    		history.loadFromFile("history.txt");
-    		dependencyGraph.loadFromFile("dependencies.txt", taskList);
-    		history.push("Se cargaron las tareas desde el archivo de texto.");
-    		break;
+		case 13: {
+    		int fileOption;
 
+    		cout << "\n--- ADMINISTRAR ARCHIVOS ---\n";
+    		cout << "1. Guardar datos actuales\n";
+    		cout << "2. Cargar datos desde archivos\n";
+    		cout << "0. Regresar al menu principal\n";
+    		cout << "Seleccione una opcion: ";
+    		cin >> fileOption;
+
+    		if (cin.fail()) {
+        		cin.clear();
+        		cin.ignore(1000, '\n');
+        		cout << "ERROR: opcion invalida.\n";
+       			break;
+    		}
+
+    		switch (fileOption) {
+        	case 1:
+            	cout << "\n--- GUARDAR DATOS ---\n";
+            	taskList.saveToFile("tasks.txt");
+            	history.saveToFile("history.txt");
+            	dependencyGraph.saveToFile("dependencies.txt");
+            	history.push("Se guardaron los datos a los archivos.");
+            	break;
+
+        	case 2: {
+            	char confirm;
+            	cout << "\nADVERTENCIA: cargar datos reemplazara la informacion actual.\n";
+            	cout << "Desea continuar? (s/n): ";
+            	cin >> confirm;
+
+            	if (confirm == 's' || confirm == 'S') {
+                	taskList.loadFromFile("tasks.txt");
+                	taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
+                	history.loadFromFile("history.txt");
+                	dependencyGraph.loadFromFile("dependencies.txt", taskList);
+
+                	history.push("Se cargaron los datos a los archivos.");
+            	} else {
+                	cout << "Carga cancelada.\n";
+            	}
+
+            	break;
+        	}
+
+        	case 0:
+            	cout << "Regresando al menu principal...\n";
+            	break;
+
+        	default:
+            	cout << "Opcion invalida.\n";
+    		}
+
+    		break;
+		}
+			
 		case 0: // cerrar el programa
-			taskList.saveToFile("tasks.txt");
-    		history.saveToFile("history.txt");
-    		dependencyGraph.saveToFile("dependencies.txt");
-    		cout << "Se guardaron los datos correctamente." << endl;
     		cout << "Saliendo del programa..." << endl;
     		break;
 			

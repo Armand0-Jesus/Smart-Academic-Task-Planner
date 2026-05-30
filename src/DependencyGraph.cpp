@@ -189,6 +189,19 @@ bool DependencyGraph::addDependency(int prerequisiteId, int dependentId, TaskLis
 	return true;
 }
 
+void DependencyGraph::removeTaskDependencies(int taskId) {
+    int index = findTaskIndex(taskId);
+
+    if (index == -1) {
+        return;
+    }
+
+    for (int i = 0; i < taskCount; i++) {
+        dependencies[index][i] = 0;
+        dependencies[i][index] = 0;
+    }
+}
+
 bool DependencyGraph::canCompleteTask(int taskId, TaskList& taskList) const {
 	int taskIndex = findTaskIndex(taskId);
 
@@ -239,11 +252,11 @@ void DependencyGraph::showMissingPrerequisites(int taskId, TaskList& taskList) c
 	}
 
 	if (!missing) {
-		cout << "Todos los pre-requisitos fueron completados.\n";
+		cout << "No tiene pre-requisitos o ya todos fueron completados.\n";
 	}
 }
 
-void DependencyGraph::displayDependencies() const {
+void DependencyGraph::displayDependencies(TaskList& taskList) const {
     bool hasDependencies = false;
 
     cout << "\n--- Dependencias entre tareas ---\n";
@@ -251,9 +264,28 @@ void DependencyGraph::displayDependencies() const {
     for (int prerequisiteIndex = 0; prerequisiteIndex < taskCount; prerequisiteIndex++) {
         for (int dependentIndex = 0; dependentIndex < taskCount; dependentIndex++) {
             if (dependencies[prerequisiteIndex][dependentIndex] == 1) {
+                Task* prerequisiteTask = taskList.searchById(taskIds[prerequisiteIndex]);
+                Task* dependentTask = taskList.searchById(taskIds[dependentIndex]);
+
+                if (prerequisiteTask == nullptr || dependentTask == nullptr) {
+                    continue;
+                }
+
+                string prerequisiteStatus = prerequisiteTask->getStatus();
+                string dependentStatus = dependentTask->getStatus();
+
+                if (prerequisiteStatus == "Completada" ||
+                    prerequisiteStatus == "completada" ||
+                    prerequisiteStatus == "COMPLETADA" ||
+                    dependentStatus == "Completada" ||
+                    dependentStatus == "completada" ||
+                    dependentStatus == "COMPLETADA") {
+                    continue;
+                }
+
                 cout << "Tarea " << taskIds[dependentIndex]
-                     << " depende de la tarea "
-                     << taskIds[prerequisiteIndex] << ".\n";
+                     << " depende de la tarea " << taskIds[prerequisiteIndex]
+                     << ".\n";
 
                 hasDependencies = true;
             }
@@ -264,4 +296,3 @@ void DependencyGraph::displayDependencies() const {
         cout << "No hay dependencias registradas.\n";
     }
 }
-
