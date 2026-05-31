@@ -14,7 +14,7 @@ struct QueueNode;
  * @brief Implementa una cola (queue) para manejar tareas pendientes.
  *
  * Pending queue guarda las tareas que esten todavia pendientes y 
- * procesandose en orden FIFO, significando que la primera tarea p
+ * procesandose en orden FIFO, significando que la primera tarea 
  * pendiente sera la primera en ser procesada.
  */
 class PendingQueue {
