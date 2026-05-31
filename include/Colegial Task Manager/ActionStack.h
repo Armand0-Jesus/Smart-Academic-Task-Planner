@@ -5,6 +5,8 @@
 #ifndef ACTIONSTACK_H
 #define ACTIONSTACK_H
 
+#include <string>
+
 struct ActionNode;
 
 /**

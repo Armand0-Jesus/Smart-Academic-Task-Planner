@@ -7,6 +7,8 @@
 
 #include "TaskList.h"
 
+#include <string>
+
 /**
  * @brief Cantidad maxima de tareas que se pueden representar en el grafo.
  */

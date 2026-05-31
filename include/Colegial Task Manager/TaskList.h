@@ -7,6 +7,8 @@
 
 #include "Task.h"
 
+#include <string>
+
 struct Node;
 
 class SearchTable;
@@ -116,6 +118,5 @@ public:
 };
 
 #endif
-
 
 
