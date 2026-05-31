@@ -1,9 +1,10 @@
-#include <iostream>
 #include "TaskList.h"
 #include "PendingQueue.h"
 #include "ActionStack.h"
 #include "SearchTable.h"
 #include "DependencyGraph.h"
+
+#include <iostream>
 
 using namespace std;
 
@@ -14,16 +15,11 @@ int main() {
 	SearchTable searchTable;
 	DependencyGraph dependencyGraph;
 
-	taskList.loadFromFile("tasks.txt");
-	taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
-	history.loadFromFile("history.txt");
-	dependencyGraph.loadFromFile("dependencies.txt", taskList);
+	bool useFiles = false;
 
 	int option;
 
-	// menu principal
-
-	do {
+	do { // menu principal
 		cout << "**************************************************************************************************" << endl;
 		cout << "                                                                                                  " << endl;
 		cout << "             ccccc          TTTTTTT         M M    M M                                            " << endl;
@@ -33,20 +29,20 @@ int main() {
 		cout << "             ccccc             T            M        M                                            " << endl;
 		cout << "                                                                                                  " << endl;
 		cout << "               \n*******Colegial Task Manager*******\n";
-		cout << "1. Crear Tarea\n";
-		cout << "2. Ensenar todas las tareas\n";
-		cout << "3. Buscar tareas por ID\n";
-		cout << "4. Eliminar Tarea\n";
-		cout << "5. Marcar tarea como completada\n";
-		cout << "6. Mostrar historial\n";
-		cout << "7. Cola de Tareas pendientes\n";
-		cout << "8. Procesar siguiente tarea pendiente\n";
-		cout << "9. Mostrar tabla de busqueda\n";
-		cout << "10. Añadir tarea dependiente\n";
-		cout << "11. Verificar si una tarea puede ser completada\n";
-		cout << "12. Mostrar dependencias\n";
-		cout << "13. Administrar archivos\n";
-		//cout << "15. Editar tarea\n"; // opciones futuras
+		cout << "1. Crear tarea\n";
+		cout << "2. Mostrar todas las tareas\n";
+		cout << "3. Buscar tarea por ID\n";
+		cout << "4. Editar tarea\n";
+		cout << "5. Eliminar tarea\n";
+		cout << "6. Marcar tarea como completada\n";
+		cout << "7. Mostrar historial\n";
+		cout << "8. Cola de Tareas pendientes\n";
+		cout << "9. Procesar siguiente tarea pendiente\n";
+		cout << "10. Mostrar tabla de busqueda\n";
+		cout << "11. Añadir dependencia entre tareas\n";
+		cout << "12. Verificar si una tarea puede ser completada\n";
+		cout << "13. Mostrar dependencias\n";
+		cout << "14. Guardar/Cargar datos a archivos\n";
 		cout << "0. Exit\n";
 
 		cout << "**************************************************************************************************" << endl;
@@ -62,7 +58,7 @@ int main() {
 		}
 
 		switch (option) {
-		case 1: { // crea tarea
+		case 1: { // crear tarea
 			int id, priority;
 			string title, description, course, dueDate, status;
 
@@ -199,7 +195,142 @@ int main() {
 			break;
 		}
 
-		case 4: { // eliminar tareas
+		case 4: { // editar tarea
+			int id;
+			string input;
+
+			cout << "\n--- EDITAR TAREA ---\n";
+			cout << "Inserte el ID de la tarea para ser editada: ";
+			cin >> id;
+
+			if (cin.fail()) {
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "ERROR: el ID debe ser un numero.\n";
+				break;
+			}
+
+			if (id <= 0) {
+				cout << "ERROR: el ID debe ser mayor que 0.\n";
+				break;
+			}
+
+			Task* found = searchTable.search(id);
+
+			if (found == nullptr) {
+				cout << "ERROR: La tarea no fue encontrada.\n";
+				history.push("Se intento editar una tarea inexistente con ID " + to_string(id));
+				break;
+			}
+
+			cin.ignore();
+
+			cout << "\nTarea actual:\n";
+			found->display();
+
+			string newTitle = found->getTitle();
+			string newDescription = found->getDescription();
+			string newCourse = found->getCourse();
+			int newPriority = found->getPriority();
+			string newDueDate = found->getDueDate();
+			string newStatus = found->getStatus();
+
+			cout << "\nDeje el campo en blanco (presione enter) si no desea cambiarlo.\n";
+
+			cout << "Nuevo titulo: ";
+			getline(cin, input);
+			if (!input.empty()) {
+				newTitle = input;
+			}
+
+			cout << "Nueva descripcion: ";
+			getline(cin, input);
+			if (!input.empty()) {
+				newDescription = input;
+			}
+
+			cout << "Nuevo curso: ";
+			getline(cin, input);
+			if (!input.empty()) {
+				newCourse = input;
+			}
+
+			cout << "Nueva prioridad (1=Alta, 2=Media, 3=Baja): ";
+			getline(cin, input);
+			if (!input.empty()) {
+				try {
+					newPriority = stoi(input);
+				} catch (...) {
+					cout << "ERROR: la prioridad debe ser un numero.\n";
+					break;
+				}
+
+				if (newPriority < 1 || newPriority > 3) {
+					cout << "ERROR: la prioridad debe ser 1, 2 o 3.\n";
+					break;
+				}
+			}
+
+			cout << "Nueva fecha de entrega (dd/mm/yyyy): ";
+			getline(cin, input);
+			if (!input.empty()) {
+				if (input.length() != 10 || input[2] != '/' || input[5] != '/') {
+					cout << "ERROR: la fecha debe tener formato dd/mm/yyyy.\n";
+					break;
+				}
+
+				newDueDate = input;
+			}
+
+			cout << "Nuevo estatus (Pendiente, En Progreso, Completada): ";
+			getline(cin, input);
+			if (!input.empty()) {
+				if (input == "Pendiente" || input == "pendiente" || input == "PENDIENTE") {
+					newStatus = "Pendiente";
+				} else if (input == "En Progreso" || input == "en progreso" || input == "EN PROGRESO") {
+					newStatus = "En Progreso";
+				} else if (input == "Completada" || input == "completada" || input == "COMPLETADA") {
+					newStatus = "Completada";
+				} else {
+					cout << "ERROR: el estatus debe ser Pendiente, En Progreso o Completada.\n";
+					break;
+				}
+			}
+
+			if (newTitle.empty() || newDescription.empty() || newCourse.empty() ||
+				newDueDate.empty() || newStatus.empty()) {
+				cout << "ERROR: ningun campo puede quedar vacio.\n";
+				break;
+			}
+
+			if (newStatus == "Completada" && found->getStatus() != "Completada") {
+				if (!dependencyGraph.canCompleteTask(id, taskList)) {
+					cout << "ERROR: La tarea no puede marcarse como completada porque tiene pre-requisitos pendientes.\n";
+					dependencyGraph.showMissingPrerequisites(id, taskList);
+					break;
+				}
+			}
+
+			found->setTitle(newTitle);
+			found->setDescription(newDescription);
+			found->setCourse(newCourse);
+			found->setPriority(newPriority);
+			found->setDueDate(newDueDate);
+			found->setStatus(newStatus);
+
+			if (newStatus == "Completada") {
+				dependencyGraph.removeTaskDependencies(id);
+			}
+
+			taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
+
+			cout << "La tarea fue editada correctamente.\n";
+			history.push("Se edito la tarea con ID " + to_string(id));
+
+			break;
+		}
+
+		case 5: { // eliminar tarea
 			int id;
 
 			cout << "\n--- Tarea Eliminada ---" << endl;
@@ -234,7 +365,7 @@ int main() {
 			break;
 		}
 
-		case 5: { // marcar tarea como completada
+		case 6: { // marcar tarea como completada
 			int id;
 
 			cout << "Inserte el ID de la tarea para marcar como completada: ";
@@ -274,16 +405,16 @@ int main() {
 
 			break;
 		}
-		case 6: // ver historial
+		case 7: // ver historial
 			history.display();
 			break;
 
-		case 7: // ver cola de tareas pendientes
+		case 8: // ver cola de tareas pendientes
 			pendingQueue.display();
 			history.push("La cola de Tareas pendientes fue vizualidada");
 			break;
 
-		case 8: // procesar proxima tarea pendiente
+		case 9: // procesar proxima tarea pendiente
 			if (pendingQueue.dequeue()) {
 				cout << "La tarea pendiente fue procesada." << endl;
 				history.push("Se proceso la siguiente tarea pendiente de la cola");
@@ -295,12 +426,12 @@ int main() {
 
 			break;
 
-		case 9: // mostrar tabla hash
+		case 10: // mostrar tabla hash
 			searchTable.displayTable();
 			history.push("Se visualizo la Tabla de busqueda");
 			break;
 
-		case 10: { // registrar dependencia
+		case 11: { // registrar dependencia
 			int prerequisiteId, dependentId;
 
 			cout << "Inserte el ID de la tarea de pre-requisito: ";
@@ -336,7 +467,7 @@ int main() {
 			break;
 		}
 
-		case 11: { // verificar si una tarea se puede completar
+		case 12: { // verificar si una tarea se puede completar
 			int id;
 
 			cout << "Inserte el ID de la tarea para verificar si puede ser completada: ";
@@ -373,72 +504,49 @@ int main() {
 			break;
 		}
 
-		case 12: 
+		case 13: // mostrar dependencias actuales entre tareas
 			dependencyGraph.displayDependencies(taskList);
 			history.push("Visualizacion de dependencias entre tareas");
 			break;
 
-		case 13: {
-    		int fileOption;
+		case 14: { // guardar/cargar datos a archivos txt
+    		char confirm;
 
-    		cout << "\n--- ADMINISTRAR ARCHIVOS ---\n";
-    		cout << "1. Guardar datos actuales\n";
-    		cout << "2. Cargar datos desde archivos\n";
-    		cout << "0. Regresar al menu principal\n";
-    		cout << "Seleccione una opcion: ";
-    		cin >> fileOption;
+    		cout << "\n--- GUARDAR/CARGAR DATOS ---\n";
+    		cout << "Esta opcion generara archivos txt con informacion del programa al salir.\n";
+    		cout << "Desea continuar? (s/n): ";
+    		cin >> confirm;
 
-    		if (cin.fail()) {
-        		cin.clear();
-        		cin.ignore(1000, '\n');
-        		cout << "ERROR: opcion invalida.\n";
-       			break;
-    		}
+    		if (confirm == 's' || confirm == 'S') {
+        		taskList.loadFromFile("tasks.txt");
+        		taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
+        		history.loadFromFile("history.txt");
+        		dependencyGraph.loadFromFile("dependencies.txt", taskList);
 
-    		switch (fileOption) {
-        	case 1:
-            	cout << "\n--- GUARDAR DATOS ---\n";
-            	taskList.saveToFile("tasks.txt");
-            	history.saveToFile("history.txt");
-            	dependencyGraph.saveToFile("dependencies.txt");
-            	history.push("Se guardaron los datos a los archivos.");
-            	break;
+        		useFiles = true;
 
-        	case 2: {
-            	char confirm;
-            	cout << "\nADVERTENCIA: cargar datos reemplazara la informacion actual.\n";
-            	cout << "Desea continuar? (s/n): ";
-            	cin >> confirm;
-
-            	if (confirm == 's' || confirm == 'S') {
-                	taskList.loadFromFile("tasks.txt");
-                	taskList.rebuildSearchAndQueue(searchTable, pendingQueue);
-                	history.loadFromFile("history.txt");
-                	dependencyGraph.loadFromFile("dependencies.txt", taskList);
-
-                	history.push("Se cargaron los datos a los archivos.");
-            	} else {
-                	cout << "Carga cancelada.\n";
-            	}
-
-            	break;
-        	}
-
-        	case 0:
-            	cout << "Regresando al menu principal...\n";
-            	break;
-
-        	default:
-            	cout << "Opcion invalida.\n";
+        		cout << "Modo de archivos activado.\n";
+        		cout << "Los datos se guardaran cuando salga del programa.\n";
+        		history.push("Se activo el guardado/cargado de datos.");
+    		} else {
+        		cout << "Operacion cancelada.\n";
     		}
 
     		break;
 		}
 			
-		case 0: // cerrar el programa
+		case 0: { // cerrar el programa
+			if (useFiles) {
+        		history.push("Se guardaron los datos al salir del programa.");
+        		taskList.saveToFile("tasks.txt");
+        		history.saveToFile("history.txt");
+        		dependencyGraph.saveToFile("dependencies.txt");
+    		}
+
     		cout << "Saliendo del programa..." << endl;
     		break;
-			
+		}
+
 		default:
 			cout << "Opcion invalida." << endl;
 		}
