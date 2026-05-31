@@ -349,6 +349,15 @@ int main() {
 				break;
 			}
 
+			char confirm;
+			cout << "Esta opcion borrara el ID y toda su informacion. Desea continuar? (s/n): ";
+			cin >> confirm;
+
+			if (confirm != 's' && confirm != 'S') {
+				cout << "Operacion cancelada.\n";
+				break;
+			}
+
 			bool removedFromList = taskList.deleteTask(id);
 
 			if (removedFromList) {

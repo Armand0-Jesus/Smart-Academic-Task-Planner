@@ -40,6 +40,9 @@ public:
      */
     ~SearchTable();
 
+    /**
+     * @brief Elimina todas las entradas de la tabla hash y deja todos los espacios de la tabla vacios.
+     */
     void clear();
 
     /**

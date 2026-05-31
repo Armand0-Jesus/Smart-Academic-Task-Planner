@@ -23,16 +23,19 @@ private:
     QueueNode* rear;
 
 public:
-     /**
+    /**
      * @brief Crea una cola vacia de la tarea pendiente.
      */
     PendingQueue();
 
-     /**
+    /**
      * @brief Destruye la cola y su memoria alocada.
      */
     ~PendingQueue();
 
+    /**
+     * @brief Elimina todas las tareas almacenadas en la cola.
+     */
     void clear();
 
     /**

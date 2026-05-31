@@ -7,8 +7,6 @@
 
 #include "Task.h"
 
-#include <string>
-
 struct Node;
 
 class SearchTable;
@@ -16,7 +14,7 @@ class PendingQueue;
 
 /**
  * @class TaskList
- * @brief Manega la conexion principal de tares utilizando listas enlazadas.
+ * @brief Maneja la conexion principal de tares utilizando listas enlazadas.
  */
 class TaskList {
 private:
@@ -33,7 +31,17 @@ public:
      */
     ~TaskList();
 
+    /**
+     * @brief Elimina todas las tareas almacenadas en la lista enlazada.
+     */
     void clear();
+
+    /**
+     * @brief Reconstruye la tabla de busqueda (estructuras auxiliares) usando las tareas actuales.
+     * 
+     * @param searchTable Tabla hash que se va a reconstruir.
+     * @param pendingQueue Cola de tareas pendientes que se va a reconstruir.
+     */
     void rebuildSearchAndQueue(SearchTable& searchTable, PendingQueue& pendingQueue);
 
     /**
@@ -43,7 +51,7 @@ public:
      */
     bool idExists(int id) const; // anadida
     
-     /**
+    /**
      * @brief Anade nueva tarea a la lista enlazada.
      * @param task Tarea a agregar.
      */
@@ -92,7 +100,18 @@ public:
      */
     bool Empty() const; // anadida
 
+    /**
+     * @brief Guarda todas las tareas en un archivo txt (tasks.txt).
+     *
+     * @param filename Nombre del archivo donde se guardaran las tareas.
+     */
     void saveToFile(const std::string& filename) const;
+
+    /**
+     * @brief Limpia la lista actual y agrega las tareas encontradas en tasks.txt.
+     * 
+     * @param filename Nombre del archivo desde donde se cargaran las tareas.
+     */
     void loadFromFile(const std::string& filename);
 };
 

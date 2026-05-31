@@ -7,9 +7,6 @@
 
 #include "TaskList.h"
 
-#include <iostream>
-#include <string>
-
 /**
  * @brief Cantidad maxima de tareas que se pueden representar en el grafo.
  */
@@ -86,8 +83,25 @@ public:
      */
     DependencyGraph();
 
+    /**
+     * @brief Elimina todas las dependencias y tareas registradas en el grafo.
+     */
     void clear();
+
+    /**
+     * @brief Guarda las dependencias actuales en un archivo de texto (dependencies.txt).
+     *
+     * @param filename Nombre del archivo donde se guardara el grafo.
+     */
     void saveToFile(const std::string& filename) const;
+
+    /**
+     * @brief Valida las tareas con la lista de tareas antes de registrar las dependencias en el grafo.
+     * 
+     *
+     * @param filename Nombre del archivo desde donde se cargaran las dependencias.
+     * @param taskList Lista de tareas usada para validar que los IDs existan.
+     */
     void loadFromFile(const std::string& filename, TaskList& taskList);
 
     /**
@@ -104,6 +118,11 @@ public:
      */
     bool addDependency(int prerequisiteId, int dependentId, TaskList& taskList);
 
+    /**
+     * @brief Elimina todas las dependencias asociadas con una tarea, ayuda a que una dependencia que no exista ya no sea mostrada.
+     * 
+     * @param taskId ID de la tarea que se desea remover del grafo.
+     */
     void removeTaskDependencies(int taskId);
 
     /**

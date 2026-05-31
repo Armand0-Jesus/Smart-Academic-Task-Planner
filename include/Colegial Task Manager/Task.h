@@ -5,8 +5,6 @@
 #ifndef TASK_H
 #define TASK_H
 
-#include <string>
-
 /**
  * @class Task
  * @brief Representa una tarea academica en el planificador academico
