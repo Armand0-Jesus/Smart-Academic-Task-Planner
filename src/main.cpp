@@ -350,7 +350,7 @@ int main() {
 			}
 
 			char confirm;
-			cout << "Esta opcion borrara el ID y toda su informacion. Desea continuar? (s/n): ";
+			cout << "Esta opcion borrara la tarea y toda su informacion. Desea continuar? (s/n): ";
 			cin >> confirm;
 
 			if (confirm != 's' && confirm != 'S') {
@@ -467,7 +467,7 @@ int main() {
 			}
 
 			if (dependencyGraph.addDependency(prerequisiteId, dependentId, taskList)) {
-				history.push("Se anadio depedencia: La tarea " + to_string(dependentId) + " depende de la Tarea " + to_string(prerequisiteId));
+				history.push("Se añadio depedencia: La tarea " + to_string(dependentId) + " depende de la Tarea " + to_string(prerequisiteId));
 			}
 			else {
 				history.push(" El Intento para anadir una dependencia fue invalido");
