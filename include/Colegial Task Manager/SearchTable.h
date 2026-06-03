@@ -24,7 +24,7 @@ private:
 
     /**
      * @brief Calcula el indice hash para la tarea
-     * @param id ID de la tarea que se convertira en indice.
+     * @param key ID de la tarea que se convertira en indice.
      * @return Indice en la tabla hash.
      */
     int hashFunction(int key) const;
@@ -47,21 +47,21 @@ public:
 
     /**
      * @brief Inserta una tarea a la tabla hash.
-     * @param id ID de tarea usafa como llave
-     * @param task Puntero a la tarea que se va a almacenar.
+     * @param key ID de tarea usada como llave.
+     * @param taskPtr Puntero a la tarea que se va a almacenar.
      */
     void insert(int key, Task* taskPtr);
 
     /**
      * @brief Busca una tarea por ID.
-     * @param id ID de la tarea a buscar.
+     * @param key ID de la tarea a buscar.
      * @return Puntero a la tarea si fue encontrada, nullptr sino.
      */
     Task* search(int key) const;
 
     /**
      * @brief Eliminar tarea de la tabla hash.
-     * @param id ID de la tarea que se desea eliminar.
+     * @param key ID de la tarea que se desea eliminar.
      * @return true si la tarea fue eliminada, false sino.
      */
     bool remove(int key);

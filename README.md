@@ -63,7 +63,7 @@ g++ -std=c++17 -Wall -Wextra -pedantic src/*.cpp -Iinclude -I"include/Colegial T
 ./task_planner
 ```
 
-#### Generating and viewing the documentation with Doxygen:
+#### Generating, viewing, and sharing the documentation with Doxygen:
 
 ```bash
 doxygen Doxyfile

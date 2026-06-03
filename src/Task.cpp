@@ -11,7 +11,7 @@ Task::Task() : id(0), priority(3), status("Pendiente") {
 }
 
 // constructor con parametros 
-Task::Task(int id, string title, string description, string course, int priority, string dueDate, string status) {
+Task::Task(int id, std::string title, std::string description, std::string course, int priority, std::string dueDate, std::string status) {
     this->id = id;
     this->title = title;
     this->description = description;
