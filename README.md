@@ -47,7 +47,8 @@ To get a hold of the project you can clone the repository:
 git clone https://github.com/Armand0-Jesus/Smart-Academic-Task-Planner.git
 cd Smart-Academic-Task-Planner
 ```
-You can install C++17 or a later version of the language for main running of the program.
+You can install C++17 or a later version of the language for main running of the program. Other requisites for full system functionality are installing Doxygen for documentation
+and Java if you want to use the report exporter like mentioned before.
 
 ## Usage
 
@@ -63,7 +64,8 @@ g++ -std=c++17 -Wall -Wextra -pedantic src/*.cpp -Iinclude -I"include/Colegial T
 ./task_planner
 ```
 
-#### Generating, viewing, and sharing the documentation with Doxygen:
+#### Generating and viewing the documentation with Doxygen:
+
 
 ```bash
 doxygen Doxyfile
